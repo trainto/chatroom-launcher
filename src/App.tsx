@@ -14,7 +14,7 @@ function App() {
   const handleLaunch = async () => {
     const token = await initToken(botId, appId, appSecret, uid, bpid);
     if (token) {
-      const url = `${chatRoomAddr}?botId=${botId}&initToken=INIT:SBTTD:cd2a1a4d1c8c42c9a3eda5ad731431ad`;
+      const url = `${chatRoomAddr}?botId=${botId}&initToken=${token}`;
       window.open(url, `chatroom`, "width=480,height=720");
       return;
     }
