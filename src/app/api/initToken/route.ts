@@ -3,8 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   const { botId, appId, appSecret, uid, bpid } = await request.json();
 
-  console.log(botId);
-
   const res = await fetch(`https://data-dev.rbdialog.co.kr/api/client/auth/v1/init-token/${botId}`, {
     method: "post",
     headers: { "Content-Type": "application/json" },
@@ -16,8 +14,6 @@ export async function POST(request: NextRequest) {
       serviceProfile: "LIVE",
     }),
   });
-
-  console.log(res);
 
   return res;
 }
