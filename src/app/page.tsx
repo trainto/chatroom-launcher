@@ -1,95 +1,105 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client";
+
+import { useState } from "react";
 
 export default function Home() {
+  const [chatRoomAddr, setChatRoomAddr] = useState("https://chat-dev.rbdialog.co.kr");
+  const [botId, setBotId] = useState("8085bce3be6c4faba77b1c2353c43818");
+  const [appId, setAppId] = useState("openbuilder-test");
+  const [appSecret, setAppSecret] = useState("n9D6Lb668d0w");
+  const [uid, setUid] = useState("uid");
+  const [bpid, setBpid] = useState("bpid");
+
+  const handleLaunch = async () => {
+    const res = await fetch("/api/initToken", {
+      method: "post",
+      body: JSON.stringify({
+        botId,
+        appId,
+        appSecret,
+        uid,
+        bpid,
+      }),
+    });
+
+    if (res.status === 200) {
+      console.log("haha");
+      const data = await res.json();
+      if (data.result && data.result.initToken) {
+        const url = `${chatRoomAddr}?botId=${botId}&initToken=${data.result.initToken}`;
+        window.open(url, `chatroom`, "width=480,height=720");
+        return;
+      }
+    }
+
+    alert("Failed to receive a token!");
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <div className="container">
+      <label>Chatroom addr:</label>
+      <input
+        type="text"
+        className="w100"
+        value={chatRoomAddr}
+        onChange={(e) => setChatRoomAddr(e.target.value)}
+      ></input>
+      <br />
+      <br />
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+      <label>Bot ID:</label>
+      <input
+        type="text"
+        className="w100"
+        value={botId}
+        onChange={(e) => setBotId(e.target.value)}
+      ></input>
+      <br />
+      <br />
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+      <label>App ID:</label>
+      <input
+        type="text"
+        className="w100"
+        value={appId}
+        onChange={(e) => setAppId(e.target.value)}
+      ></input>
+      <br />
+      <br />
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
+      <label>App secrete:</label>
+      <input
+        type="text"
+        className="w100"
+        value={appSecret}
+        onChange={(e) => setAppSecret(e.target.value)}
+      ></input>
+      <br />
+      <br />
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
+      <label>uid:</label>
+      <input
+        type="text"
+        className="w100"
+        value={uid}
+        onChange={(e) => setUid(e.target.value)}
+      ></input>
+      <br />
+      <br />
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+      <label>bpid:</label>
+      <input
+        type="text"
+        className="w100"
+        value={bpid}
+        onChange={(e) => setBpid(e.target.value)}
+      ></input>
+      <br />
+      <br />
+
+      <button onClick={handleLaunch} className="float-right">
+        Launch
+      </button>
+    </div>
+  );
 }
