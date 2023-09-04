@@ -27,7 +27,7 @@ export default function Home() {
       const data = await res.json();
       if (data.result && data.result.initToken) {
         const url = `${chatRoomAddr}?botId=${botId}&initToken=${data.result.initToken}`;
-        window.open(url, `chatroom`, "width=480,height=720");
+        window.open(url, `chatroom-${uid}`, "width=480,height=720");
         return;
       }
     }
